@@ -13,8 +13,6 @@ const httpInterceptor = {
     // 设置超时请求时间
     options.timeout = 10000
 
-    console.log(options)
-
     // 添加小程序端请求头标识
     options.header = {
       ...options.header,
@@ -40,7 +38,29 @@ export function getHomeBanner<T>(options?: UniApp.RequestOptions) {
       url: '/home/banner',
       ...options,
       success(res) {
-        resolve(res.data as ApiBannerData<T>)
+        if (res.statusCode >= 200 && res.statusCode < 300) {
+          resolve(res.data as ApiBannerData<T>)
+        } else if (res.statusCode === 401) {
+          const memberStroe = useMemberStore()
+          memberStroe.clearProfile()
+          uni.navigateTo({
+            url: '/pages/login/login',
+          })
+          reject(res)
+        } else {
+          uni.showToast({
+            icon: 'error',
+            title: (res.data as ApiBannerData<T>).msg || '请求失败',
+          })
+          reject(res)
+        }
+      },
+      fail(err) {
+        uni.showToast({
+          icon: 'error',
+          title: '网络错误',
+        })
+        reject(err)
       },
     })
   })
