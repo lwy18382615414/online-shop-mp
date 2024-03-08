@@ -1,5 +1,5 @@
-export interface ApiBannerData<T> {
+export interface Data<T> {
   code: string
   msg: string
-  data: T
+  result: T
 }

@@ -1,5 +1,6 @@
 import { useMemberStore } from '@/stores'
-import type { ApiBannerData } from './type'
+import type { Data } from './type'
+import type { BannerItem } from '@/types/home'
 
 const baseUrl = 'https://pcapi-xiaotuxian-front-devtest.itheima.net'
 
@@ -31,15 +32,13 @@ const httpInterceptor = {
 uni.addInterceptor('request', httpInterceptor)
 uni.addInterceptor('uploadFile', httpInterceptor)
 
-export function getHomeBanner<T>(options?: UniApp.RequestOptions) {
-  return new Promise<ApiBannerData<T>>((resolve, reject) => {
+export function http<T>(options: UniApp.RequestOptions) {
+  return new Promise<Data<T>>((resolve, reject) => {
     uni.request({
-      method: 'GET',
-      url: '/home/banner',
       ...options,
       success(res) {
         if (res.statusCode >= 200 && res.statusCode < 300) {
-          resolve(res.data as ApiBannerData<T>)
+          resolve(res.data as Data<T>)
         } else if (res.statusCode === 401) {
           const memberStroe = useMemberStore()
           memberStroe.clearProfile()
@@ -50,7 +49,7 @@ export function getHomeBanner<T>(options?: UniApp.RequestOptions) {
         } else {
           uni.showToast({
             icon: 'error',
-            title: (res.data as ApiBannerData<T>).msg || '请求失败',
+            title: (res.data as Data<T>).msg || '请求失败',
           })
           reject(res)
         }
@@ -63,5 +62,16 @@ export function getHomeBanner<T>(options?: UniApp.RequestOptions) {
         reject(err)
       },
     })
+  })
+}
+
+// 获取首页轮播图
+export function getHomeBannerApi(distributionSite: number) {
+  return http<BannerItem[]>({
+    method: 'GET',
+    url: '/home/banner',
+    data: {
+      distributionSite,
+    },
   })
 }
