@@ -5,3 +5,10 @@ export type BannerItem = {
   imgUrl: string
   type: number
 }
+
+// 分类说明
+export type CategoryItem = {
+  id: string
+  name: string
+  icon: string
+}

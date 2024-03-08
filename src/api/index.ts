@@ -1,6 +1,6 @@
 import { useMemberStore } from '@/stores'
 import type { Data } from './type'
-import type { BannerItem } from '@/types/home'
+import type { BannerItem, CategoryItem } from '@/types/home'
 
 const baseUrl = 'https://pcapi-xiaotuxian-front-devtest.itheima.net'
 
@@ -32,7 +32,7 @@ const httpInterceptor = {
 uni.addInterceptor('request', httpInterceptor)
 uni.addInterceptor('uploadFile', httpInterceptor)
 
-export function http<T>(options: UniApp.RequestOptions) {
+function http<T>(options: UniApp.RequestOptions) {
   return new Promise<Data<T>>((resolve, reject) => {
     uni.request({
       ...options,
@@ -73,5 +73,13 @@ export function getHomeBannerApi(distributionSite: number) {
     data: {
       distributionSite,
     },
+  })
+}
+
+// 获取首页分类
+export function getHomeCategoryApi() {
+  return http<CategoryItem[]>({
+    method: 'GET',
+    url: '/home/category/mutli',
   })
 }
