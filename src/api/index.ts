@@ -1,6 +1,6 @@
 import { useMemberStore } from '@/stores'
 import type { Data } from './type'
-import type { BannerItem, CategoryItem } from '@/types/home'
+import type { BannerItem, CategoryItem, HotPanelItem } from '@/types/home'
 
 const baseUrl = 'https://pcapi-xiaotuxian-front-devtest.itheima.net'
 
@@ -81,5 +81,13 @@ export function getHomeCategoryApi() {
   return http<CategoryItem[]>({
     method: 'GET',
     url: '/home/category/mutli',
+  })
+}
+
+// 获取首页推荐
+export function getHotPanelApi() {
+  return http<HotPanelItem[]>({
+    method: 'GET',
+    url: '/home/hot/mutli',
   })
 }
