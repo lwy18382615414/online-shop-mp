@@ -22,3 +22,20 @@ export type HotPanelItem = {
   title: string
   type: string
 }
+
+// 猜你喜欢
+export type GuessList = {
+  counts: number
+  pageSize: number
+  pages: number
+  page: number
+  items: Array<{
+    id: string
+    name: string
+    desc: string
+    price: number
+    picture: string
+    discount: number
+    orderNum: number
+  }>
+}

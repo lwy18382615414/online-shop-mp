@@ -1,6 +1,6 @@
 import { useMemberStore } from '@/stores'
 import type { Data } from './type'
-import type { BannerItem, CategoryItem, HotPanelItem } from '@/types/home'
+import type { BannerItem, CategoryItem, GuessList, HotPanelItem } from '@/types/home'
 
 const baseUrl = 'https://pcapi-xiaotuxian-front-devtest.itheima.net'
 
@@ -89,5 +89,17 @@ export function getHotPanelApi() {
   return http<HotPanelItem[]>({
     method: 'GET',
     url: '/home/hot/mutli',
+  })
+}
+
+// 猜你喜欢
+export function getGuessApi(page: number, pageSize: number) {
+  return http<GuessList>({
+    method: 'GET',
+    url: '/home/goods/guessLike',
+    data: {
+      page,
+      pageSize,
+    },
   })
 }

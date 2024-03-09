@@ -41,16 +41,21 @@ defineProps({
   justify-content: space-around;
   &__item {
     margin: 16rpx 0;
+    padding: 16rpx;
+    border-radius: 16rpx;
+    background-color: #fff;
+
     &__title {
       margin-bottom: 16rpx;
       &__main {
-        font-size: 36rpx;
-        margin-right: 16rpx;
+        font-size: 32rpx;
+        color: #262626;
+        margin-right: 18rpx;
       }
 
       &__sub {
-        font-size: 26rpx;
-        color: #666;
+        font-size: 24rpx;
+        color: #7f7f7f;
       }
     }
 
