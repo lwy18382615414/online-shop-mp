@@ -12,7 +12,7 @@
           <text>{{ item.price }}</text>
         </view>
       </navigator>
-      <view class="load"> {{ loadText }} </view>
+      <view class="load"> {{ loadTitle }} </view>
     </view>
   </view>
 </template>
@@ -20,8 +20,9 @@
 <script setup lang="ts">
 import type { GuessList } from '@/types/home'
 import type { PropType } from 'vue'
+import { computed } from 'vue'
 
-defineProps({
+const props = defineProps({
   guessList: {
     type: Object as PropType<GuessList>,
     default: () => {},
@@ -31,6 +32,8 @@ defineProps({
     default: '正在加载中...',
   },
 })
+
+const loadTitle = computed(() => props.loadText)
 </script>
 
 <style lang="scss" scoped>

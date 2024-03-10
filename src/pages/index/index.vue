@@ -27,9 +27,9 @@ import { ref } from 'vue'
 import CustomNavbar from './components/CustomNavbar.vue'
 import CategoryPanel from './components/CategoryPanel.vue'
 import HotPanel from './components/HotPanel.vue'
-import { getGuessApi, getHomeBannerApi, getHomeCategoryApi, getHotPanelApi } from '@/api/index'
+import { getGuessApi, getHomeBannerApi, getHomeCategoryApi, getHotPanelApi } from '../../api/index'
 import { onLoad } from '@dcloudio/uni-app'
-import type { BannerItem, CategoryItem, GuessList, HotPanelItem } from '@/types/home'
+import type { BannerItem, CategoryItem, GuessList, HotPanelItem } from '../../types/home'
 import PageSkeleton from './components/PageSkeleton.vue'
 
 const distributionSite = 1
@@ -83,6 +83,7 @@ async function getGuessList() {
 async function onScrolltolower() {
   if (currentPage.value < total.value) {
     currentPage.value++
+    loadText.value = '正在加载中...'
     const guessRes = await getGuessApi(currentPage.value, pageSize.value)
     if (guessRes.code === '1') {
       guessList.value.page = guessRes.result.page

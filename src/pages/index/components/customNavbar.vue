@@ -1,5 +1,5 @@
 <template>
-  <view class="navbar-container" :style="{ paddingTop: safeAreaInsets?.top + 'px' }">
+  <view class="navbar-container" :style="{ paddingTop: safeAreaInsets.top + 'px' }">
     <view class="navbar-container__logo">
       <image class="navbar-container__logo__image" src="@/static/images/logo.png" />
       <text class="navbar-container__logo__title">新鲜 · 亲民 · 快捷</text>

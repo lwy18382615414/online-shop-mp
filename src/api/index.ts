@@ -32,7 +32,7 @@ const httpInterceptor = {
 uni.addInterceptor('request', httpInterceptor)
 uni.addInterceptor('uploadFile', httpInterceptor)
 
-function http<T>(options: UniApp.RequestOptions) {
+export function http<T>(options: UniApp.RequestOptions) {
   return new Promise<Data<T>>((resolve, reject) => {
     uni.request({
       ...options,

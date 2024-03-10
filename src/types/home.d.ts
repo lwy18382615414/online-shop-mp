@@ -1,3 +1,5 @@
+import { GoodsItem } from './index'
+
 // 轮播图
 export type BannerItem = {
   hrefUrl: string
@@ -29,13 +31,5 @@ export type GuessList = {
   pageSize: number
   pages: number
   page: number
-  items: Array<{
-    id: string
-    name: string
-    desc: string
-    price: number
-    picture: string
-    discount: number
-    orderNum: number
-  }>
+  items: Array<GoodsItem>
 }

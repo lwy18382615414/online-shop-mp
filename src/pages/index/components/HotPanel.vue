@@ -9,7 +9,7 @@
           {{ item.alt }}
         </text>
       </view>
-      <navigator url="/pages" class="card">
+      <navigator :url="`/pages/hot/index?type=${item.type}`" class="card">
         <image
           v-for="img in item.pictures"
           :key="img"
