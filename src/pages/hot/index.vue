@@ -52,7 +52,7 @@
 import { URL_MAPPING } from './constance'
 import type { PropType } from 'vue'
 import { ref } from 'vue'
-import { getHotRecommendApi } from '../../api/hot.ts'
+import { getHotRecommendApi } from '../../api/hot'
 import { onLoad } from '@dcloudio/uni-app'
 import type { SubTypeItem } from '../../types/hot'
 

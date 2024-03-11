@@ -6,7 +6,7 @@
         :circular="true"
         class="data-v-98925bff CustomSwiper--data-v-98925bff"
         :interval="3000"
-        current="0"
+        :current="0"
       ></swiper>
       <view class="indicator CustomSwiper--indicator data-v-98925bff CustomSwiper--data-v-98925bff">
         <text class="dot CustomSwiper--dot data-v-98925bff CustomSwiper--data-v-98925bff"></text>
