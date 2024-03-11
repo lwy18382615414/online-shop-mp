@@ -8,7 +8,6 @@
 			"^Custom(.*)": "@/components/Custom$1.vue"
 		}
 	},
-
 	"pages": [
 		//pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
@@ -22,6 +21,7 @@
 		{
 			"path": "pages/my/my",
 			"style": {
+				"navigationStyle": "custom",
 				"navigationBarTitleText": "我的"
 			}
 		},
@@ -47,6 +47,12 @@
 			"path": "pages/hot/index",
 			"style": {
 				"navigationBarTitleText": "热门推荐"
+			}
+		},
+		{
+			"path": "pages/goods/index",
+			"style": {
+				"navigationBarTitleText": "商品详情"
 			}
 		}
 	],
