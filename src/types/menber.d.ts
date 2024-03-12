@@ -32,3 +32,29 @@ export type ProfileParams = Pick<
   // 区县编码
   countyCode?: string
 }
+
+// 收获地址
+export type AddressResult = {
+  id: string
+  receiver: string
+  contact: string
+  provinceCode: string
+  cityCode: string
+  countyCode: string
+  fullLocation: string
+  address: string
+  isDefault: number
+}
+
+// 新增收获地址请求体参数
+export type AddressParams = {
+  receiver: string
+  contact: string
+  provinceCode: string
+  cityCode: string
+  countyCode: string
+  address: string
+  isDefault: number
+  postalCode?: string
+  addressTags?: string
+}

@@ -4,30 +4,53 @@
     <view class="title">配送至</view>
     <!-- 内容 -->
     <view class="content">
-      <view class="item">
-        <view class="user">李明 13824686868</view>
-        <view class="address">北京市顺义区后沙峪地区安平北街6号院</view>
-        <text class="icon icon-checked"></text>
-      </view>
-      <view class="item">
-        <view class="user">王东 13824686868</view>
-        <view class="address">北京市顺义区后沙峪地区安平北街6号院</view>
-        <text class="icon icon-ring"></text>
-      </view>
-      <view class="item">
-        <view class="user">张三 13824686868</view>
-        <view class="address">北京市朝阳区孙河安平北街6号院</view>
-        <text class="icon icon-ring"></text>
+      <view
+        v-for="(item, index) in addressList"
+        :key="item.id"
+        @tap="handleCheck(index)"
+        class="item"
+      >
+        <view class="user">{{ item.receiver }} {{ item.contact }}</view>
+        <view class="address">{{ item.fullLocation }} {{ item.address }}</view>
+        <text :class="currentIndex === index ? 'icon icon-checked' : 'icon icon-ring'"></text>
       </view>
     </view>
     <view class="footer">
-      <view class="button primary"> 新建地址 </view>
-      <view v-if="false" class="button primary">确定</view>
+      <view class="button primary">
+        <navigator
+          url="/pagesMember/address-form/index"
+          open-type="navigate"
+          hover-class="navigator-hover"
+        >
+          新建地址
+        </navigator>
+      </view>
+      <view @tap="onConfirm" class="button primary">确定</view>
     </view>
   </view>
 </template>
 <script setup lang="ts">
-//
+import type { AddressResult } from '@/types/menber'
+import { ref, type PropType } from 'vue'
+
+const props = defineProps({
+  addressList: {
+    type: Array as PropType<Array<AddressResult>>,
+    default: () => [],
+  },
+})
+
+const emits = defineEmits(['handleConfirm'])
+
+const currentIndex = ref(0)
+
+function handleCheck(index: number) {
+  currentIndex.value = index
+}
+
+function onConfirm() {
+  emits('handleConfirm', props.addressList[currentIndex.value])
+}
 </script>
 <style lang="scss">
 .address-panel {

@@ -29,7 +29,14 @@
         </view>
         <view @tap="openPopup('address')" class="item arrow">
           <text class="label">送至</text>
-          <text class="text ellipsis"> 请选择收获地址 </text>
+          <view class="text ellipsis">
+            <text v-if="!receiverValue">请选择收获地址</text>
+            <view v-else>
+              <text>{{ receiverValue }}</text>
+              <text style="margin: 0 20rpx">{{ fullLocationValue }}</text>
+              <text>{{ addressValue }}</text>
+            </view>
+          </view>
         </view>
         <view @tap="openPopup('service')" class="item arrow">
           <text class="label">服务</text>
@@ -59,7 +66,11 @@
   </view>
 
   <uni-popup ref="popup" type="bottom" background-color="#ffffff">
-    <AddressPanel v-if="popupName === 'address'" />
+    <AddressPanel
+      :addressList="addressList"
+      @handleConfirm="handleConfirm"
+      v-if="popupName === 'address'"
+    />
     <ServicePanel v-if="popupName === 'service'" />
   </uni-popup>
 </template>
@@ -71,6 +82,8 @@ import { onLoad } from '@dcloudio/uni-app'
 import { ref, type PropType, computed } from 'vue'
 import AddressPanel from './components/AddressPanel.vue'
 import ServicePanel from './components/ServicePanel.vue'
+import type { AddressResult } from '@/types/menber'
+import { getAddressApi } from '@/api/profile'
 
 const good = defineProps({
   id: {
@@ -87,9 +100,13 @@ const popup = ref<{
   close: () => void
 }>()
 const popupName = ref<'address' | 'service'>()
+const addressList = ref<Array<AddressResult>>([])
+const receiverValue = ref('')
+const fullLocationValue = ref('')
+const addressValue = ref('')
 
 onLoad(async () => {
-  await Promise.all([getGoodDetail()])
+  await Promise.all([getGoodDetail(), getAddressList()])
 })
 // 获取屏幕边界到安全区域距离
 const { safeAreaInsets } = uni.getSystemInfoSync()
@@ -122,6 +139,20 @@ function onTapImage(url: string) {
 function openPopup(name: typeof popupName.value) {
   popupName.value = name
   popup.value?.open()
+}
+
+async function getAddressList() {
+  const res = await getAddressApi()
+  if (res.code === '1') {
+    addressList.value = res.result
+  }
+}
+
+function handleConfirm(address: AddressResult) {
+  addressValue.value = address.address
+  receiverValue.value = address.receiver
+  fullLocationValue.value = address.fullLocation
+  popup.value?.close()
 }
 </script>
 
