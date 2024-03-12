@@ -40,14 +40,14 @@
           </button>
         </view>
       </view>
-      <view class="tips" :class="{ animate__shakeY: isAgreePrivacyShakeY }">
+      <view class="tips">
         <label class="label" @tap="isAgreePrivacy = !isAgreePrivacy">
           <radio class="radio" color="#28bb9c" :checked="isAgreePrivacy" />
           <text>登录/注册即视为你同意专属铺子</text>
         </label>
         <navigator class="link" hover-class="none" url="./protocal">《服务条款》</navigator>
         和
-        <text class="link" @tap="onOpenPrivacyContract">《隐私协议》</text>
+        <text class="link">《隐私协议》</text>
       </view>
     </view>
   </view>

@@ -34,7 +34,7 @@
           </view>
         </view>
       </view>
-      <navigator class="settings" url="/pagesMember/settings/settings" hover-class="none">
+      <navigator class="settings" url="/pagesMember/settings/index" hover-class="none">
         设置
       </navigator>
     </view>
@@ -49,7 +49,7 @@
       <view class="section">
         <!-- 订单 -->
         <navigator
-          v-for="item in orderTypes"
+          v-for="item in ORDER_TYPES"
           :key="item.type"
           :class="item.icon"
           :url="`/pagesOrder/list/list?type=${item.type}`"
@@ -76,6 +76,7 @@ import { useMemberStore } from '@/stores'
 import type { GuessList } from '@/types/home'
 import { getGuessApi } from '@/api'
 import { onLoad } from '@dcloudio/uni-app'
+import { ORDER_TYPES } from './constance'
 
 // 获取屏幕边界到安全区域距离
 const { safeAreaInsets } = uni.getSystemInfoSync()

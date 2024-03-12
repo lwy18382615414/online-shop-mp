@@ -23,9 +23,9 @@
       </view>
       <!-- 操作面板 -->
       <view class="action">
-        <view @tap="openSkuPopup(SkuMode.Both)" class="item arrow">
+        <view class="item arrow">
           <text class="label">选择</text>
-          <text class="text ellipsis"> {{ selectArrText }} </text>
+          <text class="text ellipsis"> 1 </text>
         </view>
         <view @tap="openPopup('address')" class="item arrow">
           <text class="label">送至</text>
@@ -53,8 +53,8 @@
       </navigator>
     </view>
     <view class="buttons">
-      <view @tap="openSkuPopup(SkuMode.Cart)" class="addcart"> 加入购物车 </view>
-      <view @tap="openSkuPopup(SkuMode.Buy)" class="payment"> 立即购买 </view>
+      <view class="addcart"> 加入购物车 </view>
+      <view class="payment"> 立即购买 </view>
     </view>
   </view>
 
