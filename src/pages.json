@@ -107,15 +107,24 @@
 					"style": {
 						"navigationBarTitleText": "设置"
 					}
+				},
+				{
+					"path": "profile/index",
+					"style": {
+						"navigationStyle": "custom",
+						"navigationBarTitleText": "个人信息"
+					}
 				}
 			]
 		}
 	],
 	// 分包预下载
 	"preloadRule": {
-		"pages/my/my":{
+		"pages/my/my": {
 			"network": "all",
-			"packages": ["pagesMember"]
+			"packages": [
+				"pagesMember"
+			]
 		}
 	}
 }
