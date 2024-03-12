@@ -102,27 +102,47 @@ async function getProfileInfo() {
 
 // 修改头像
 function onAvatarChange() {
+  // #ifdef MP-WEIXIN
   uni.chooseMedia({
     count: 1,
     mediaType: ['image'],
     success: (res) => {
       const { tempFilePath } = res.tempFiles[0]
-      uni.uploadFile({
-        name: 'file',
-        url: '/member/profile/avatar',
-        filePath: tempFilePath,
-        success: (success) => {
-          if (success.statusCode === 200) {
-            const avatar = JSON.parse(success.data).result.avatar
-            profile.value.avatar = avatar // 更新
-            memberStore.profile!.avatar = avatar
-            uni.showToast({
-              icon: 'success',
-              title: '头像修改成功',
-            })
-          }
-        },
-      })
+      uploadFile(tempFilePath)
+    },
+  })
+  // #endif
+
+  // #ifdef H5 || APP-PLUS
+  uni.chooseImage({
+    count: 1,
+    success: (res) => {
+      // 文件路径
+      const tempFilePaths = res.tempFilePaths
+      // 上传
+      uploadFile(tempFilePaths[0])
+    },
+  })
+  // #endif
+}
+
+function uploadFile(file: string) {
+  uni.uploadFile({
+    name: 'file',
+    url: '/member/profile/avatar',
+    filePath: file,
+    success: (success) => {
+      if (success.statusCode === 200) {
+        const avatar = JSON.parse(success.data).result.avatar
+        profile.value.avatar = avatar // 更新
+        memberStore.profile!.avatar = avatar
+        uni.showToast({
+          icon: 'success',
+          title: '头像修改成功',
+        })
+      } else {
+        uni.showToast({ icon: 'error', title: '出现错误' })
+      }
     },
   })
 }

@@ -4,7 +4,12 @@
       <view class="text">猜你喜欢</view>
     </view>
     <view class="guess">
-      <navigator url="/pages/" v-for="item in guessList.items" :key="item.id" class="item">
+      <navigator
+        :url="`/pages/goods/index?id=${item.id}`"
+        v-for="item in guessList.items"
+        :key="item.id"
+        class="item"
+      >
         <image :src="item.picture" class="image" />
         <view class="title ellipsis">{{ item.name }}</view>
         <view class="price">
