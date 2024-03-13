@@ -78,7 +78,7 @@
         <text class="icon-handset"></text>客服
       </button>
       <!-- #endif -->
-      <navigator class="icons-button" url="/pages/cart/cart2" open-type="navigate">
+      <navigator class="icons-button" url="/pages/cart/cart2/index" open-type="navigate">
         <text class="icon-cart"></text>购物车
       </navigator>
     </view>
@@ -124,6 +124,7 @@ import type {
   SkuPopupLocaldata,
 } from '@/components/vk-data-goods-sku-popup/vk-data-goods-sku-popup'
 import { addCartApi } from '@/api/cart'
+import { useMemberStore } from '@/stores'
 
 const good = defineProps({
   id: {
@@ -152,9 +153,11 @@ enum SkuMode {
   Buy = 3,
 }
 const modeValue = ref<SkuMode>(SkuMode.Both)
+const memberStore = useMemberStore()
 
 onLoad(async () => {
-  await Promise.all([getGoodDetail(), getAddressList()])
+  if (memberStore.profile) getAddressList()
+  await Promise.all([getGoodDetail()])
 })
 // 获取屏幕边界到安全区域距离
 const { safeAreaInsets } = uni.getSystemInfoSync()
@@ -218,6 +221,12 @@ async function getAddressList() {
   const res = await getAddressApi()
   if (res.code === '1') {
     addressList.value = res.result
+    const defaultAddress = res.result.find((item) => item.isDefault === 1)
+    if (defaultAddress) {
+      addressValue.value = defaultAddress.address
+      receiverValue.value = defaultAddress.receiver
+      fullLocationValue.value = defaultAddress.fullLocation
+    }
   }
 }
 

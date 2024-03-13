@@ -54,7 +54,7 @@ const loadTitle = computed(() => props.loadText)
 
       &::before,
       &::after {
-        content: '12';
+        content: '1 2';
         color: transparent;
         width: 20rpx;
         height: 20rpx;

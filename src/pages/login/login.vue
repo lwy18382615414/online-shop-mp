@@ -99,7 +99,8 @@ function loginSuccess(profile: LoginResult) {
   menberStore.setProfile(profile)
   setTimeout(() => {
     // 跳转到我的
-    uni.switchTab({ url: '/pages/my/my' })
+    // uni.switchTab({ url: '/pages/my/my' })
+    uni.navigateBack()
   }, 500)
 }
 </script>
