@@ -89,7 +89,7 @@
 </template>
 
 <script lang="ts" setup>
-import { getNowOrderApi, getPreOrderApi } from '@/api/order'
+import { getNowOrderApi, getPreOrderApi, submitOrder } from '@/api/order'
 import { useAddressStore } from '@/stores/modules/address'
 import type { PreOrderResult } from '@/types/order'
 import { onLoad } from '@dcloudio/uni-app'
@@ -162,6 +162,29 @@ const activeDelivery = computed(() => deliveryList.value[activeIndex.value])
 // 修改配送时间
 const onChangeDelivery: UniHelper.SelectorPickerOnChange = (ev) => {
   activeIndex.value = ev.detail.value
+}
+
+async function onOrderSubmit() {
+  const res = await submitOrder({
+    goods: orderPre.value.goods.map((item) => ({
+      skuId: item.skuId,
+      count: item.count,
+    })),
+    addressId: selecteAddress.value?.id as string,
+    deliveryTimeType: String(activeDelivery.value.type),
+    buyerMessage: buyerMessage.value,
+    payType: 1,
+    payChannel: 2,
+  })
+  if (res.code === '1') {
+    uni.showToast({
+      icon: 'success',
+      title: '提交成功',
+    })
+  }
+  setTimeout(() => {
+    uni.redirectTo({ url: `/pagesOrder/detail/index?id=${res.result.id}` })
+  }, 500)
 }
 </script>
 

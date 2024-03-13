@@ -37,3 +37,15 @@ export type PreOrderResult = {
   goods: GoodsItem[] // 商品集合
   summary: Summary // 结算信息
 }
+
+export type SubmitOrderParams = {
+  goods: Array<{
+    skuId: string
+    count: number
+  }>
+  addressId: string
+  deliveryTimeType: string
+  buyerMessage: string
+  payType: number
+  payChannel: number
+}

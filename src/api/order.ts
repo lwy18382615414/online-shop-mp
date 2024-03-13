@@ -1,4 +1,4 @@
-import type { PreOrderResult } from '@/types/order'
+import type { PreOrderResult, SubmitOrderParams } from '@/types/order'
 import { http } from './index'
 
 // 获取预付订单
@@ -15,5 +15,21 @@ export function getNowOrderApi(data: { skuId: string; count: string; addressId?:
     method: 'GET',
     url: '/member/order/pre/now',
     data,
+  })
+}
+
+// 提交订单
+export function submitOrder(data: SubmitOrderParams) {
+  return http<{ id: string }>({
+    method: 'POST',
+    url: '/member/order',
+    data,
+  })
+}
+
+export function getOrderDetail(id: string) {
+  return http({
+    method: 'GET',
+    url: `/member/order/${id}`,
   })
 }
