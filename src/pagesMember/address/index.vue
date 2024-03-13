@@ -42,11 +42,13 @@
 
 <script setup lang="ts">
 import { deleteAddressApi, getAddressApi } from '@/api/profile'
+import { useAddressStore } from '@/stores/modules/address'
 import type { AddressResult } from '@/types/menber'
 import { onShow } from '@dcloudio/uni-app'
 import { ref } from 'vue'
 
 const addressList = ref<Array<AddressResult>>([])
+const addressStore = useAddressStore()
 
 onShow(async () => {
   await Promise.all([getAddressList()])
@@ -58,7 +60,10 @@ async function getAddressList() {
   }
 }
 
-function onChangeAddress(address: AddressResult) {}
+function onChangeAddress(address: AddressResult) {
+  addressStore.changeSelectedAddress(address)
+  uni.navigateBack()
+}
 
 async function onDeleteAddress(id: string) {
   // 二次确认

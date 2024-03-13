@@ -134,6 +134,17 @@
 					}
 				}
 			]
+		},
+		{
+			"root": "pagesOrder",
+			"pages": [
+				{
+					"path": "create/index",
+					"style": {
+						"navigationBarTitleText": "填写订单"
+					}
+				}
+			]
 		}
 	],
 	// 分包预下载

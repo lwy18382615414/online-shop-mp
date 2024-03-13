@@ -154,6 +154,7 @@ enum SkuMode {
 }
 const modeValue = ref<SkuMode>(SkuMode.Both)
 const memberStore = useMemberStore()
+const defaultAddress = ref(<AddressResult>{})
 
 onLoad(async () => {
   if (memberStore.profile) getAddressList()
@@ -221,16 +222,18 @@ async function getAddressList() {
   const res = await getAddressApi()
   if (res.code === '1') {
     addressList.value = res.result
-    const defaultAddress = res.result.find((item) => item.isDefault === 1)
-    if (defaultAddress) {
-      addressValue.value = defaultAddress.address
-      receiverValue.value = defaultAddress.receiver
-      fullLocationValue.value = defaultAddress.fullLocation
+    const isDefaultAddress = res.result.find((item) => item.isDefault === 1)
+    if (isDefaultAddress) {
+      defaultAddress.value = isDefaultAddress
+      addressValue.value = isDefaultAddress.address
+      receiverValue.value = isDefaultAddress.receiver
+      fullLocationValue.value = isDefaultAddress.fullLocation
     }
   }
 }
 
 function handleConfirm(address: AddressResult) {
+  defaultAddress.value = address
   addressValue.value = address.address
   receiverValue.value = address.receiver
   fullLocationValue.value = address.fullLocation
@@ -253,7 +256,11 @@ async function addCart(ev: SkuPopupEvent) {
   }
 }
 
-function buyNow() {}
+function buyNow(ev: SkuPopupEvent) {
+  uni.navigateTo({
+    url: `/pagesOrder/create/index?skuId=${ev._id}&count=${ev.buy_num}&addressId=${defaultAddress.value.id}`,
+  })
+}
 </script>
 
 <style lang="scss" scoped>

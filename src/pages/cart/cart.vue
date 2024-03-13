@@ -173,19 +173,27 @@ async function onChangeSelectedAll() {
 
   await isSelectedAllApi({ selected: _isSelectedAll })
 }
-
-const selectedCartListCount = computed(() =>
-  cartList.value.reduce((acc, item) => acc + item.count, 0),
-)
-
 // 计算选中单品列表
 const selectedCartList = computed(() => cartList.value.filter((v) => v.selected))
+
+const selectedCartListCount = computed(() =>
+  selectedCartList.value.reduce((acc, item) => acc + item.count, 0),
+)
 
 const selectedCartListMoney = computed(() =>
   selectedCartList.value.reduce((sum, item) => sum + item.count * item.nowPrice, 0),
 )
 
-function gotoPayment() {}
+function gotoPayment() {
+  if (selectedCartListCount.value === 0) {
+    return uni.showToast({
+      icon: 'none',
+      title: '请选择商品',
+    })
+  }
+  // 跳转到结算页
+  uni.navigateTo({ url: '/pagesOrder/create/index' })
+}
 
 async function getGuessList() {
   const guessRes = await getGuessApi(1, 10)
