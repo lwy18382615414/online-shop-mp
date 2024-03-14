@@ -89,7 +89,7 @@
 </template>
 
 <script lang="ts" setup>
-import { getNowOrderApi, getPreOrderApi, submitOrder } from '@/api/order'
+import { getNowOrderApi, getOrderAgainApi, getPreOrderApi, submitOrder } from '@/api/order'
 import { useAddressStore } from '@/stores/modules/address'
 import type { PreOrderResult } from '@/types/order'
 import { onLoad } from '@dcloudio/uni-app'
@@ -105,6 +105,10 @@ const query = defineProps({
     default: '',
   },
   addressId: {
+    type: String as PropType<string>,
+    default: '',
+  },
+  orderId: {
     type: String as PropType<string>,
     default: '',
   },
@@ -128,6 +132,8 @@ const activeIndex = ref(0)
 onLoad(async () => {
   if (query.skuId) {
     await getNowOrderList()
+  } else if (query.orderId) {
+    await getOrderAgain()
   } else {
     await getPreOrderList()
   }
@@ -147,15 +153,34 @@ async function getNowOrderList() {
   orderPre.value = res.result
 }
 
-const selecteAddress = computed(() =>
-  query.skuId
-    ? addressStore.selectedAddress.id
+async function getOrderAgain() {
+  const res = await getOrderAgainApi(query.orderId)
+  orderPre.value = res.result
+}
+
+const selecteAddress = computed(() => {
+  if (!orderPre.value.userAddresses || orderPre.value.userAddresses.length === 0) {
+    return
+  }
+
+  let selectedAddress
+
+  if (query.skuId) {
+    selectedAddress = addressStore.selectedAddress.id
       ? addressStore.selectedAddress
       : orderPre.value.userAddresses[0]
-    : addressStore.selectedAddress.id
-    ? addressStore.selectedAddress
-    : orderPre.value.userAddresses?.find((item) => item.isDefault === 1),
-)
+  } else {
+    selectedAddress = addressStore.selectedAddress.id
+      ? addressStore.selectedAddress
+      : orderPre.value.userAddresses?.find((item) => item.isDefault === 1)
+  }
+
+  if (!selectedAddress) {
+    return
+  }
+
+  return selectedAddress
+})
 
 // 当前配送时间
 const activeDelivery = computed(() => deliveryList.value[activeIndex.value])

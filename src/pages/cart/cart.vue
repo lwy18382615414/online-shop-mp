@@ -131,6 +131,7 @@ onShow(async () => {
 async function getCartList() {
   const res = await getCartListApi()
   cartList.value = res.result
+  showCartList.value = res.result.length > 0
 }
 
 // 是否选中商品
