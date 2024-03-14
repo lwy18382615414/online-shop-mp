@@ -12,7 +12,7 @@
       <view class="title">订单详情</view>
     </view>
   </view>
-  <scroll-view scroll-y class="viewport" id="scroller" @scrolltolower="onScrolltolower">
+  <scroll-view scroll-y class="viewport" id="scroller">
     <template v-if="orderDetail">
       <!-- 订单状态 -->
       <view class="overview" :style="{ paddingTop: safeAreaInsets!.top + 20 + 'px' }">
@@ -137,8 +137,6 @@
           <view class="item">下单时间: {{ orderDetail.createTime }}</view>
         </view>
       </view>
-
-      <!-- 猜你喜欢 -->
 
       <!-- 底部操作栏 -->
       <view class="toolbar-height" :style="{ paddingBottom: safeAreaInsets?.bottom + 'px' }"></view>

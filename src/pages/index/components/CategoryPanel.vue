@@ -4,7 +4,8 @@
       v-for="item in categoryList"
       :key="item.id"
       class="category-container__item"
-      url="/pages/index/index"
+      :url="`/pages/category/category`"
+      open-type="switchTab"
     >
       <image class="category-container__item__icon" :src="item.icon" />
       <text class="category-container__item__text">

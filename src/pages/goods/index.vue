@@ -67,6 +67,8 @@
         </view>
       </view>
     </view>
+
+    <view style="height: 100rpx"></view>
   </scroll-view>
 
   <!-- 用户操作 -->

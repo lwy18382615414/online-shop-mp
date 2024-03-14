@@ -1,5 +1,5 @@
 <template>
-  <scroll-view class="viewport" scroll-y @scrolltolower="onScrolltolower">
+  <scroll-view class="viewport" scroll-y>
     <!-- 订单状态 -->
     <view class="overview">
       <view class="status icon-checked">支付成功</view>
@@ -31,8 +31,6 @@
 const query = defineProps<{
   id: string
 }>()
-
-// 猜你喜欢
 </script>
 <style lang="scss">
 page {
