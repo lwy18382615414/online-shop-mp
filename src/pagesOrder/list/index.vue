@@ -18,7 +18,7 @@
       <!-- 滑动项 -->
       <swiper-item v-for="item in orderTabs" :key="item.orderState">
         <!-- 订单列表 -->
-        <scroll-view scroll-y class="orders">
+        <scroll-view scroll-y class="orders" @scrolltolower="onScrollToLower">
           <view class="card" v-for="item in orderList.items" :key="item.id">
             <!-- 订单信息 -->
             <view class="status">
@@ -26,7 +26,11 @@
               <!-- 订单状态文字 -->
               <text>{{ orderTabs[item.orderState]?.title }}</text>
               <!-- 待评价/已完成/已取消 状态: 展示删除订单 -->
-              <text v-if="item.orderState > OrderState.DaiPingJia" class="icon-delete"></text>
+              <text
+                v-if="item.orderState > OrderState.DaiPingJia"
+                @tap="onDeleteOrder(item.id)"
+                class="icon-delete"
+              ></text>
             </view>
             <!-- 商品信息，点击商品跳转到订单详情，不是商品详情 -->
             <navigator
@@ -73,7 +77,7 @@
           </view>
           <!-- 底部提示文字 -->
           <view class="loading-text" :style="{ paddingBottom: safeAreaInsets?.bottom + 'px' }">
-            {{ true ? '没有更多数据~' : '正在加载...' }}
+            {{ loadText }}
           </view>
         </scroll-view>
       </swiper-item>
@@ -81,7 +85,7 @@
   </view>
 </template>
 <script setup lang="ts">
-import { getOrderListApi } from '@/api/order'
+import { deleteOrderApi, getOrderListApi } from '@/api/order'
 import { ref, type PropType, watch } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
 import type { OrderListResult } from '@/types/order'
@@ -109,18 +113,23 @@ const activeIndex = ref(orderTabs.value.findIndex((item) => item.orderState === 
 const orderList = ref(<OrderListResult>{})
 const page = ref(1)
 const pageSize = ref(5)
+const orderType = ref(0)
+const totalPage = ref(0)
+const loadText = ref('正在加载中...')
 
 onShow(async () => {
   await getOrderList()
 })
 
 async function getOrderList() {
+  page.value = 1
   const res = await getOrderListApi({
     page: page.value,
     pageSize: pageSize.value,
     orderState: query.type,
   })
   orderList.value = res.result
+  totalPage.value = res.result.pages
 }
 
 async function changeOrderType(index: number) {
@@ -134,14 +143,29 @@ const onOrderTypeChange: UniHelper.SwiperOnChange = async (ev) => {
 watch(
   () => activeIndex.value,
   async (curentIndex) => {
-    const res = await getOrderListApi({
-      page: page.value,
-      pageSize: pageSize.value,
-      orderState: curentIndex,
+    orderType.value = curentIndex
+    page.value = 1
+    // 开始显示loading
+    uni.showLoading({
+      title: '加载中',
     })
-    orderList.value = res.result
+
+    try {
+      const res = await getOrderListApi({
+        page: page.value,
+        pageSize: pageSize.value,
+        orderState: curentIndex,
+      })
+      if (res.result.items.length === 0) loadText.value = '没有更多了~'
+      orderList.value = res.result
+    } catch (error) {
+      // handle error
+    } finally {
+      uni.hideLoading()
+    }
   },
 )
+
 // 支付
 async function onOrderPay(id: string) {
   // 开发环境调用模拟支付接口
@@ -164,6 +188,35 @@ async function onOrderPay(id: string) {
   uni.showToast({ title: '支付成功' })
   const order = orderList.value.items.find((v) => v.id === id)
   order!.orderState = OrderState.DaiFaHuo
+}
+
+async function onScrollToLower() {
+  if (page.value < totalPage.value) {
+    page.value++
+    loadText.value = '正在加载中...'
+    const res = await getOrderListApi({
+      page: page.value,
+      pageSize: pageSize.value,
+      orderState: orderType.value,
+    })
+    orderList.value.items = [...orderList.value.items, ...res.result.items]
+  } else {
+    loadText.value = '没有更多了~'
+  }
+}
+
+async function onDeleteOrder(orderId: string) {
+  // 二次确认弹窗
+  uni.showModal({
+    content: '确认删除此订单？',
+    success: async (success) => {
+      if (success.confirm) {
+        await deleteOrderApi({ ids: [orderId] })
+        uni.showToast({ title: '删除成功' })
+        await getOrderList()
+      }
+    },
+  })
 }
 </script>
 <style lang="scss">

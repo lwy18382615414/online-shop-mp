@@ -156,7 +156,11 @@
             再次购买
           </navigator>
           <!-- 待收货状态: 展示确认收货 -->
-          <view v-if="orderDetail.orderState === OrderState.DaiShouHuo" class="button primary">
+          <view
+            v-if="orderDetail.orderState === OrderState.DaiShouHuo"
+            @tap="onOrderConfirm"
+            class="button primary"
+          >
             确认收货
           </view>
           <!-- 待评价状态: 展示去评价 -->
