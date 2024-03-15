@@ -17,6 +17,19 @@ export type ProfileDetail = BaseProfile & {
   profession?: string
 }
 
+export type AccountLoginResult = {
+  id: number
+  mobile: string
+  token: string
+  nickname: string
+  avatar: string
+  gender: string
+  birthday: string
+  cityCode: string
+  provinceCode: string
+  profession: string
+}
+
 /** 性别 */
 export type Gender = '女' | '男'
 

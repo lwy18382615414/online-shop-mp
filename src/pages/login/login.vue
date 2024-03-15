@@ -1,16 +1,14 @@
 <template>
   <view class="viewport">
     <view class="logo">
-      <image
-        src="https://pcapi-xiaotuxian-front-devtest.itheima.net/miniapp/images/logo_icon.png"
-      ></image>
+      <text>前端铺子</text>
     </view>
     <view class="login">
       <!-- 网页端表单登录 -->
       <!-- #ifdef H5 -->
-      <!-- <input v-model="form.account" class="input" type="text" placeholder="请输入用户名/手机号码" />
+      <input v-model="form.account" class="input" type="text" placeholder="请输入用户名/手机号码" />
       <input v-model="form.password" class="input" type="text" password placeholder="请输入密码" />
-      <button @tap="onSubmit" class="button phone">登录</button> -->
+      <button @tap="onSubmit" class="button phone">登录</button>
       <!-- #endif -->
 
       <!-- 小程序端授权登录 -->
@@ -55,12 +53,16 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
-import { wxLogin, wxLoginSimple } from '@/api/login'
+import { accountLogin, wxLogin, wxLoginSimple } from '@/api/login'
 import { useMemberStore } from '@/stores'
 import type { LoginResult } from '@/types/menber'
 
 const isAgreePrivacy = ref(true)
 const code = ref('')
+const form = ref({
+  account: '13123456789',
+  password: '123456',
+})
 
 onLoad(async () => {
   const res = await wx.login()
@@ -103,6 +105,11 @@ function loginSuccess(profile: LoginResult) {
     uni.navigateBack()
   }, 500)
 }
+
+async function onSubmit() {
+  const res = await accountLogin(form.value)
+  loginSuccess(res.result)
+}
 </script>
 
 <style lang="scss">
@@ -120,11 +127,12 @@ page {
 .logo {
   flex: 1;
   text-align: center;
-  image {
-    width: 220rpx;
-    height: 220rpx;
-    margin-top: 15vh;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  font-size: 48rpx;
+  letter-spacing: 10rpx;
 }
 
 .login {

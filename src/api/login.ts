@@ -1,4 +1,4 @@
-import type { LoginResult } from '@/types/menber'
+import type { AccountLoginResult, LoginResult } from '@/types/menber'
 import { http } from './index'
 
 type LoginParam = {
@@ -27,5 +27,14 @@ export function wxLoginSimple(phoneNumber: string) {
     data: {
       phoneNumber,
     },
+  })
+}
+
+// 传统登录
+export function accountLogin(data: { account: string; password: string }) {
+  return http<LoginResult>({
+    method: 'POST',
+    url: '/login',
+    data,
   })
 }

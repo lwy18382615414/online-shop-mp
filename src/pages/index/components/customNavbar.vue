@@ -1,7 +1,7 @@
 <template>
   <view class="navbar-container" :style="{ paddingTop: safeAreaInsets?.top + 'px' }">
     <view class="navbar-container__logo">
-      <image class="navbar-container__logo__image" src="@/static/images/logo.png" />
+      <text class="navbar-container__logo__image">前端铺子</text>
       <text class="navbar-container__logo__title">新鲜 · 亲民 · 快捷</text>
     </view>
     <view class="navbar-container__search">
@@ -42,6 +42,10 @@ const { safeAreaInsets } = uni.getSystemInfoSync()
     &__image {
       width: 166rpx;
       height: 40rpx;
+      color: #ffffff;
+      font-weight: 700;
+      letter-spacing: 8rpx;
+      font-size: 32rpx;
     }
     &__title {
       flex: 1;
